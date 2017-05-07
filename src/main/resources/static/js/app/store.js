@@ -12,6 +12,14 @@ define(["jquery", "widget/utils", "app/mock"], function($, Utils, Mock){
 		}
 
 	};
+	Store.login = function(url, params, oAfterOkCallback, oAfterPOKCallback){
+		if(mock){
+
+		}
+		else{
+			Utils.postJson(AJAX_ROOT_URL + url, params, oAfterOkCallback, oAfterPOKCallback);
+		}
+	};
 
 	return Store;
 

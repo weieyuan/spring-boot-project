@@ -86,7 +86,7 @@ require(["widget/utils", "app/store", "bootstrap", "less"], function(Utils, Stor
 			passWord: passWord
 		}, function(data) {
 			if (data.ok) {
-
+				registrySuccess(data.res);
 			} else {
 				validateFail(data.res);
 			}
@@ -100,6 +100,10 @@ require(["widget/utils", "app/store", "bootstrap", "less"], function(Utils, Stor
 	var validateFail = function(strMsg) {
 		$("#info").css("display", "block");
 		$("#info").text(strMsg);
+	};
+
+	var registrySuccess = function(res){
+		window.location.href = AJAX_ROOT_URL + res;
 	};
 
 });

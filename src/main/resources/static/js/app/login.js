@@ -12,7 +12,7 @@ require.config({
     }
 });
 
-require(["widget/utils", "bootstrap", "less"], function(Utils) {
+require(["widget/utils", "app/store", "bootstrap", "less"], function(Utils, Stores) {
 
     var strHtml = '<form class="form-horizontal" onSubmit="return false;">\
         <div class="form-group">\
@@ -34,22 +34,35 @@ require(["widget/utils", "bootstrap", "less"], function(Utils) {
                 <button id="regigtry" type="submit" class="btn btn-default">注册</button>\
             </div>\
         </div>\
+        <div id="info" class="alert alert-warning" role="alert" style="display: none;"></div>\
     </form>';
 
     $("#container").append(strHtml);
 
-    $("#signIn").click(function(){
-    	var userName = $("#inputUserName").val();
-    	var passWord = $("#inputPassword").val();
-    	Utils.postJson(AJAX_URL_ROOT + "login", {
-    		usrName: userName,
-    		passWord: passWord,
-    	}, function(){
+    $("#signIn").click(function() {
+        var userName = $("#inputUserName").val();
+        var passWord = $("#inputPassword").val();
+        Stores.login("login", {
+            userName: userName,
+            passWord: passWord,
+        }, function(data) {
+            if (!data.ok) {
+                validateFail(data.res);
+            } else {
+                loginSuccess(data.res);
+            }
+        }, function() {
 
-    	}, function(){
-
-    	});
+        });
     });
 
+    var validateFail = function(strMsg) {
+        $("#info").css("display", "block");
+        $("#info").text(strMsg);
+    };
+
+    var loginSuccess = function(res) {
+        window.location.href = AJAX_ROOT_URL + res;
+    };
 
 });

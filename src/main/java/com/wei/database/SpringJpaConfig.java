@@ -17,6 +17,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.wei.utils.EncryptorUtils;
+
 @Configuration
 @EnableJpaRepositories("com.wei")
 @EnableTransactionManagement
@@ -31,8 +33,10 @@ public class SpringJpaConfig {
 		BasicDataSource oBasicDataSource = new BasicDataSource();
 		oBasicDataSource.setDriverClassName(env.getProperty("MySQL.driverClassName"));
 		oBasicDataSource.setUrl(env.getProperty("MySQL.url"));
-		oBasicDataSource.setUsername(env.getProperty("MySQL.userName"));
-		oBasicDataSource.setPassword(env.getProperty("MySQL.password"));
+		String userName = EncryptorUtils.decrypt(env.getProperty("MySQL.userName"));
+		oBasicDataSource.setUsername(userName);
+		String passWord = EncryptorUtils.decrypt(env.getProperty("MySQL.password"));
+		oBasicDataSource.setPassword(passWord);
 		oBasicDataSource.setInitialSize(Integer.valueOf(env.getProperty("MySQL.initialSize")));
 		oBasicDataSource.setMaxActive(Integer.valueOf(env.getProperty("MySQL.maxTotal")));
 		oBasicDataSource.setMaxIdle(Integer.valueOf(env.getProperty("MySQL.maxIdle")));

@@ -23,4 +23,12 @@ public class HttpUtils {
 
 	}
 
+	public static boolean isAjaxRequest(HttpServletRequest request) {
+		String reqType = request.getHeader("X-Requested-With");
+		if ("XMLHttpRequest".equals(reqType)) {
+			return true;
+		}
+		return false;
+	}
+
 }
